@@ -46,7 +46,7 @@ Output:
   "location": "westcentralus",
   "managedBy": null,
   "name": "myResourceGroup",
-  "properties": {
+"properties": {
     "provisioningState": "Succeeded"
   },
   "tags": null
@@ -89,6 +89,11 @@ Create an SSH tunnel to the Swarm master. Replace `IPAddress` with the IP addres
 ssh -p 2200 -fNL 2375:localhost:2375 azureuser@IPAddress
 ```
 
+If you receive an error like this "Permissions 0777 for '/Users/username/.ssh/id_rsa' are too open.", do these steps:
+
+- Copy ssh key from Windows user profile to Linux user profile: cp /mnt/c/Users/username/.ssh/* /home/username/.ssh
+- Change the file permissions: chmod 400 /home/username/.ssh/id_rsa
+
 Set the `DOCKER_HOST` environment variable. This allows you to run docker commands against the Docker Swarm without having to specify the name of the host.
 
 ```bash
@@ -103,7 +108,7 @@ You are now ready to run Docker services on the Docker Swarm.
 Create a file named `docker-compose.yaml` and copy the following content into it.
 
 ```yaml
-version: '3'
+version: '2'
 services:
   azure-vote-back:
     image: redis
